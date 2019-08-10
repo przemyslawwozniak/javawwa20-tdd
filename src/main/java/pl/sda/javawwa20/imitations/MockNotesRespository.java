@@ -1,9 +1,6 @@
 package pl.sda.javawwa20.imitations;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class MockNotesRespository implements NotesRepository {
 
@@ -19,7 +16,10 @@ public class MockNotesRespository implements NotesRepository {
         }
         //2. zupelnie nowy uczen
         else {
-            nameToNotesMap.put(note.getFullName(), Arrays.asList(note));
+            //aby nie tworzyc niemutowalnej listy
+            List<Note> notes = new ArrayList<>();
+            notes.add(note);
+            nameToNotesMap.put(note.getFullName(), notes);
         }
     }
 
