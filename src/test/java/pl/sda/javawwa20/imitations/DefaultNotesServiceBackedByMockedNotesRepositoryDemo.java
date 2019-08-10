@@ -57,12 +57,24 @@ public class DefaultNotesServiceBackedByMockedNotesRepositoryDemo {
      */
     @Test
     public void average_of_existing() {
+        NotesRepository mockNotesRepository = mock(NotesRepository.class);
+        when(mockNotesRepository.getAllNotesOf("PW")).thenReturn(Arrays.asList(
+                Note.of("PW", 5.0),
+                Note.of("PW", 5.0),
+                Note.of("PW", 2.0)
+        ));
 
+        NotesService notesService = DefaultNotesService.createWith(mockNotesRepository);
+        assertEquals(4.0, notesService.averageOf("PW"), 0.00001);
     }
 
     @Test(expected = NoSuchUserException.class)
     public void average_of_nonexistent() {
+        NotesRepository mockNotesRepository = mock(NotesRepository.class);
+        when(mockNotesRepository.getAllNotesOf(any(String.class))).thenReturn(null);
 
+        NotesService notesService = DefaultNotesService.createWith(mockNotesRepository);
+        notesService.averageOf("cokolwiek");
     }
 
     //ignorujemy ten test poniewaz sygnatura NotesRepository#save nie przewiduje wyrzucenia wyjatku IOException
