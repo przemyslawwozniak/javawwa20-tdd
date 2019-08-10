@@ -27,7 +27,7 @@ public class DefaultNotesService implements NotesService {
 
         List<Note> userNotes = notesRepository.getAllNotesOf(fullName);
 
-        if(userNotes.isEmpty())
+        if(userNotes == null || userNotes.isEmpty())
             throw new NoSuchUserException();
 
         return userNotes.stream()
