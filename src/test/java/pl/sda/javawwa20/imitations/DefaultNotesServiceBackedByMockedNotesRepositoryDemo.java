@@ -66,6 +66,8 @@ public class DefaultNotesServiceBackedByMockedNotesRepositoryDemo {
 
         NotesService notesService = DefaultNotesService.createWith(mockNotesRepository);
         assertEquals(4.0, notesService.averageOf("PW"), 0.00001);
+
+        verify(mockNotesRepository, only()).getAllNotesOf("PW");
     }
 
     @Test(expected = NoSuchUserException.class)
@@ -75,18 +77,20 @@ public class DefaultNotesServiceBackedByMockedNotesRepositoryDemo {
 
         NotesService notesService = DefaultNotesService.createWith(mockNotesRepository);
         notesService.averageOf("cokolwiek");
+
+        verify(mockNotesRepository, only()).getAllNotesOf("cokolwiek");
     }
 
     //ignorujemy ten test poniewaz sygnatura NotesRepository#save nie przewiduje wyrzucenia wyjatku IOException
-/*    @Ignore
+    @Ignore
     @Test(expected = IOException.class)
     public void should_throw_on_persistance_layer_exception() {
-        NotesRepository spyNotesRepository = spy(ImitatedNotesRepository.class);
+        NotesRepository spyNotesRepository = spy(MockNotesRespository.class);
         doThrow(new IOException()).when(spyNotesRepository).save(Note.of("PW", 3.0));
         NotesService notesService = DefaultNotesService.createWith(spyNotesRepository);
         notesService.add(Note.of("AM", 5.0));
         notesService.add(Note.of("PW", 3.0));
-    }*/
+    }
 
     private void updateJournal(String name, Double score) {
         if(notesJournal.containsKey(name)) {
