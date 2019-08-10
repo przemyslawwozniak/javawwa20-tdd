@@ -3,6 +3,7 @@ package pl.sda.javawwa20;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 public class ProductRatingTest {
 
@@ -23,6 +24,20 @@ public class ProductRatingTest {
     //kiedy przekazemy do metody setScore jako argument
     //1) < 0
     //2) > 10
-    //3) < 1
 
+    @Test(expected = IllegalArgumentException.class)
+    public void cannot_set_negative_value() {
+        ProductRating pr = new ProductRating();
+        pr.setScore((short)-1);
+    }
+
+    //ten test mowi nam, ze jezeli pojawi sie w trakcie jego
+    //wykonania wyjatek IllegalArgumentException
+    //to test jest ZALICZONY
+    //w przeciwnym wypadku test NIE PRZECHODZI
+    @Test(expected = IllegalArgumentException.class)
+    public void cannot_set_value_more_than_10() {
+        ProductRating pr = new ProductRating();
+        pr.setScore((short)11);
+    }
 }
