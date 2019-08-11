@@ -9,7 +9,7 @@ public class Player {
     }
 
     public void placeSign(int squareNo, Board board) {
-        board.signs[squareNo] = sign;
+        board.assignSign(squareNo, sign);
     }
 
     public Board.Sign getSign() {
