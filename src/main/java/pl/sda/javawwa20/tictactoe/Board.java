@@ -2,11 +2,30 @@ package pl.sda.javawwa20.tictactoe;
 
 import com.google.common.base.Preconditions;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class Board {
     int length = 3;
     int width = 3;
     Sign[] signs = new Sign[length * width];    //mozemy tu wpisac tylko X, O
     Sign allowedSign;   //przechowuje informacje o tym, kto teraz wykonuje ruch
+
+    public static List<List<Integer>> winningSequences = new ArrayList<>();
+    {
+        //rows
+        winningSequences.add(Arrays.asList(0, 1, 2));
+        winningSequences.add(Arrays.asList(3, 4, 5));
+        winningSequences.add(Arrays.asList(6, 7, 8));
+        //columns
+        winningSequences.add(Arrays.asList(0, 3, 6));
+        winningSequences.add(Arrays.asList(1, 4, 7));
+        winningSequences.add(Arrays.asList(2, 5, 8));
+        //diagonals
+        winningSequences.add(Arrays.asList(0, 4, 8));
+        winningSequences.add(Arrays.asList(6, 4, 2));
+    }
 
     public Board(Sign allowedSign) {
         this.allowedSign = allowedSign;
@@ -58,6 +77,20 @@ public class Board {
        }
 
        return stringBuilder.toString();
+    }
+
+    public boolean isWinningSign(Sign sign) {
+        for(List<Integer> winningSequence : winningSequences) {
+            boolean isWinner = false;
+            for(int square : winningSequence) { //auto-unboxing: Integer -> int
+                isWinner = signs[square].equals(sign);
+                if(!isWinner)
+                    break;  //jesli ktorykolwiek ze znakow nie jest na pozycji, skoncz sprawdzanie tej sekwencji
+            }
+            if(isWinner)
+                return true;
+        }
+        return false;
     }
 
     public enum Sign {

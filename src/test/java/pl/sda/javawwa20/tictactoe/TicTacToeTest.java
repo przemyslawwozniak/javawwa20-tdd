@@ -1,7 +1,10 @@
 package pl.sda.javawwa20.tictactoe;
 
 import org.assertj.core.api.Assertions;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+
+import java.util.Arrays;
 
 public class TicTacToeTest {
 
@@ -112,6 +115,34 @@ public class TicTacToeTest {
                 "|O|X|2|\n" +
                 "|3|X|5|\n" +
                 "|6|O|8|\n");
+    }
+
+    @Test
+    public void wins() {
+        //given
+        Board board = new Board(Board.Sign.X);
+        Player playerX = new Player(Board.Sign.X);
+        Player playerO = new Player(Board.Sign.O);
+        //when
+        playerX.placeSign(0, board);
+        playerO.placeSign(3, board);
+        playerX.placeSign(1, board);
+        playerO.placeSign(4, board);
+        playerX.placeSign(2, board);
+
+        board.print();
+
+        //then
+        Assertions.assertThat(playerX.isWinner(board)).isTrue();
+    }
+
+    @DataProvider(name = "winningGames")
+    public Object[][] supplyWinningGames() {
+            return new Object[][] {
+                    //playerX moves; player O moves; winning sign
+                    {Arrays.asList(0, 4, 8), Arrays.asList(1, 5, 7), Board.Sign.X},
+
+            };
     }
 
     //camel case notation example

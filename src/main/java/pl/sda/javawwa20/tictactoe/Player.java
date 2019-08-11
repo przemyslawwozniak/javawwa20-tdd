@@ -16,4 +16,7 @@ public class Player {
         return sign;
     }
 
+    public boolean isWinner(Board board) {
+        return board.isWinningSign(this.sign);
+    }
 }
