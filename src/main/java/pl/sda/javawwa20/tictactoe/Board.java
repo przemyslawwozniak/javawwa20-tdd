@@ -19,12 +19,45 @@ public class Board {
 
     public void assignSign(int squareNo, Sign sign) {
         //jesli nie jest tura przekazanego znaku, wyrzuca IllegalArgumentException
+        Preconditions.checkArgument(squareNo >= 0 && squareNo < signs.length, "Cannot place sign outside of a board");
         Preconditions.checkArgument(signs[squareNo] == null, "Square %s is already taken", squareNo);
         Preconditions.checkArgument(sign.equals(allowedSign), "This is not %s turn", sign);
 
         //a jesli nie, to jedziemy dalej
         signs[squareNo] = sign;
         allowedSign = sign.other();
+    }
+
+    public void print() {
+        System.out.println(getPrintableBoard());
+    }
+
+    /**
+     * |O|X|2|\n
+     * |3|X|5|\n
+     * |6|O|8|\n
+     * @return
+     */
+    public String getPrintableBoard() {
+       StringBuilder stringBuilder = new StringBuilder();
+
+       for(int row = 0; row < length; row++) {
+           stringBuilder.append("|");
+           for(int col = 0; col < width; col++) {
+               final int squareNo = row * length + col;
+               final Sign signOnSquare = signs[squareNo];
+               //avoids calling .toName on null object
+               if(signOnSquare != null)
+                   stringBuilder.append(signOnSquare.name());
+               else
+                   stringBuilder.append(squareNo);
+
+               stringBuilder.append("|");
+           }
+           stringBuilder.append("\n");
+       }
+
+       return stringBuilder.toString();
     }
 
     public enum Sign {

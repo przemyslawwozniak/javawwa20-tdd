@@ -67,10 +67,58 @@ public class TicTacToeTest {
         Assertions.assertThat(board.signs[0]).isEqualTo(playerO.getSign());
     }
 
-    @Test
+    @Test(expectedExceptions = {IllegalArgumentException.class})
     public void player_cannot_place_sign_outside_of_board() {
-
+        //given
+        Board board = new Board(Board.Sign.X);
+        Player playerX = new Player(Board.Sign.X);
+        //when
+        playerX.placeSign(15, board);
+        //then throws an exception
     }
+
+    @Test(expectedExceptions = {IllegalArgumentException.class})
+    public void player_cannot_start_a_game_if_its_not_his_turn() {
+        //given
+        Board board = new Board(Board.Sign.X);
+        Player playerO = new Player(Board.Sign.O);
+        //when
+        playerO.placeSign(0, board);
+        //then throws an exception
+    }
+
+    /**
+     * |O|X|2|
+     * |3|X|5|
+     * |6|O|8|
+     */
+    @Test
+    public void prints_board() {
+        //given
+        Board board = new Board(Board.Sign.X);
+        Player playerX = new Player(Board.Sign.X);
+        Player playerO = new Player(Board.Sign.O);
+        //when
+        playerX.placeSign(4, board);
+        playerO.placeSign(0, board);
+        playerX.placeSign(1, board);
+        playerO.placeSign(7, board);
+
+        board.print();
+        String printableBoard = board.getPrintableBoard();
+
+        //then
+        Assertions.assertThat(printableBoard).isEqualTo(
+                "|O|X|2|\n" +
+                "|3|X|5|\n" +
+                "|6|O|8|\n");
+    }
+
+    //camel case notation example
+/*    @Test
+    public void playerCannotPlaceSignOutsideOfBoard() {
+
+    }*/
 
 
 
