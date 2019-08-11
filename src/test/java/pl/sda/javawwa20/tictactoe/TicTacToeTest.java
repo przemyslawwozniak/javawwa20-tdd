@@ -5,6 +5,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class TicTacToeTest {
 
@@ -141,8 +142,41 @@ public class TicTacToeTest {
             return new Object[][] {
                     //playerX moves; player O moves; winning sign
                     {Arrays.asList(0, 4, 8), Arrays.asList(1, 5, 7), Board.Sign.X},
-
+                    {Arrays.asList(3, 6, 4), Arrays.asList(2, 8, 5), Board.Sign.O},
+                    {Arrays.asList(2, 5, 4, 3), Arrays.asList(1, 8, 6), Board.Sign.X},
+                    {Arrays.asList(2, 5, 8), Arrays.asList(0, 4, 7), Board.Sign.X},
+                    {Arrays.asList(7, 3, 1), Arrays.asList(5, 2, 8), Board.Sign.O},
+                    {Arrays.asList(0, 1, 2), Arrays.asList(8, 7, 6), Board.Sign.X},
+                    {Arrays.asList(3, 4, 5), Arrays.asList(0, 1, 8), Board.Sign.X},
+                    {Arrays.asList(0, 3, 6, 8), Arrays.asList(4, 7, 1), Board.Sign.X},
+                    {Arrays.asList(6, 4, 2, 8), Arrays.asList(3, 7, 5), Board.Sign.X}
             };
+    }
+
+    @Test(dataProvider = "winningGames")
+    public void accepts_winning_sequences(List<Integer> playerXMoves,
+                                          List<Integer> playerOMoves,
+                                          Board.Sign winningSign) {
+        //given
+        Board board = new Board(Board.Sign.X);
+        Player playerX = new Player(Board.Sign.X);
+        Player playerO = new Player(Board.Sign.O);
+
+        //when
+        int maxListLength = playerXMoves.size() >= playerOMoves.size() ?
+                playerXMoves.size() : playerOMoves.size();
+
+        for(int moveNo = 0; moveNo < maxListLength; moveNo++) {
+            if(playerXMoves.size() > moveNo)
+                playerX.placeSign(playerXMoves.get(moveNo), board);
+            if(playerOMoves.size() > moveNo)
+                playerO.placeSign(playerOMoves.get(moveNo), board);
+        }
+
+        board.print();
+
+        //then
+        Assertions.assertThat(board.isWinningSign(winningSign)).isTrue();
     }
 
     //camel case notation example

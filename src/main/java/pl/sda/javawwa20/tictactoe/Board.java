@@ -83,9 +83,11 @@ public class Board {
         for(List<Integer> winningSequence : winningSequences) {
             boolean isWinner = false;
             for(int square : winningSequence) { //auto-unboxing: Integer -> int
-                isWinner = signs[square].equals(sign);
-                if(!isWinner)
-                    break;  //jesli ktorykolwiek ze znakow nie jest na pozycji, skoncz sprawdzanie tej sekwencji
+                if(signs[square] != null) {
+                    isWinner = signs[square].equals(sign);
+                    if(!isWinner)
+                        break;  //jesli ktorykolwiek ze znakow nie jest na pozycji, skoncz sprawdzanie tej sekwencji
+                }
             }
             if(isWinner)
                 return true;
