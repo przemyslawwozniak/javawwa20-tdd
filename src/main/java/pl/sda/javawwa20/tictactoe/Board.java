@@ -88,6 +88,10 @@ public class Board {
                     if(!isWinner)
                         break;  //jesli ktorykolwiek ze znakow nie jest na pozycji, skoncz sprawdzanie tej sekwencji
                 }
+                else {
+                    isWinner = false;
+                    break;  //jesli pozycja jest niezajeta, od razu break
+                }
             }
             if(isWinner)
                 return true;
