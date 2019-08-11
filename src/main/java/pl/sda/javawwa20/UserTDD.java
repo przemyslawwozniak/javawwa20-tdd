@@ -4,6 +4,9 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class UserTDD {
 
@@ -11,6 +14,19 @@ public class UserTDD {
     private UserTDDStatus status;
     private LocalDateTime lastLoggedInDate;
     private String username;
+
+    public static Map<UserTDDStatus, UserTDDStatus> ALLOWED_STATUS_TRANSITIONS;
+    //blok statycznej inicjalizacji kodu
+    //zostanie wywolany zanim powstanie jakakolwiek instancja tej klasy
+    {
+        ALLOWED_STATUS_TRANSITIONS = new HashMap<>();
+        ALLOWED_STATUS_TRANSITIONS.put(UserTDDStatus.INITIALIZED,
+                UserTDDStatus.ACTIVATED);
+        ALLOWED_STATUS_TRANSITIONS.put(UserTDDStatus.ACTIVATED,
+                UserTDDStatus.DEACTIVATED);
+        ALLOWED_STATUS_TRANSITIONS.put(UserTDDStatus.DEACTIVATED,
+                UserTDDStatus.ACTIVATED);
+    }
 
     //redefiniuje domyslny konstruktor
     public UserTDD() {
@@ -76,10 +92,10 @@ public class UserTDD {
     }
 
     public void switchState(UserTDDStatus status) {
-        if(status.equals(UserTDDStatus.DEACTIVATED))
+        if(ALLOWED_STATUS_TRANSITIONS.get(this.status).equals(status))
+            this.status = status;
+        else
             throw new StatusTransitionNotPossibleException();
-
-        this.status = status;
     }
 
     //inner class

@@ -73,12 +73,25 @@ public class UserTDDTest {
 
     @Test
     public void changes_user_status_from_ACTIVATED_to_DEACTIVATED() {
-
+        //given user in ACTIVATED state
+        UserTDD userTDD = new UserTDD();
+        userTDD.switchState(UserTDD.UserTDDStatus.ACTIVATED);
+        //when
+        userTDD.switchState(UserTDD.UserTDDStatus.DEACTIVATED);
+        //then
+        Assertions.assertThat(userTDD.getStatus()).isEqualTo(UserTDD.UserTDDStatus.DEACTIVATED);
     }
 
     @Test
     public void changes_user_status_from_DEACTIVATED_to_ACTIVATED() {
-
+        //given user in DEACTIVATED state
+        UserTDD userTDD = new UserTDD();
+        userTDD.switchState(UserTDD.UserTDDStatus.ACTIVATED);
+        userTDD.switchState(UserTDD.UserTDDStatus.DEACTIVATED);
+        //when
+        userTDD.switchState(UserTDD.UserTDDStatus.ACTIVATED);
+        //then
+        Assertions.assertThat(userTDD.getStatus()).isEqualTo(UserTDD.UserTDDStatus.ACTIVATED);
     }
 
     @Test(expectedExceptions = {StatusTransitionNotPossibleException.class})
@@ -90,8 +103,26 @@ public class UserTDDTest {
         //then exception is thrown
     }
 
-    //dodatkowo nie mozna:
     //activated -> initialized
-    //deactivated -> initialized
+    @Test(expectedExceptions = {StatusTransitionNotPossibleException.class})
+    public void cannot_change_user_status_from_ACTIVATED_to_INITIALIZED() {
+        //given user in ACTIVATED state
+        UserTDD userTDD = new UserTDD();
+        userTDD.switchState(UserTDD.UserTDDStatus.ACTIVATED);
+        //when
+        userTDD.switchState(UserTDD.UserTDDStatus.INITIALIZED);
+        //then exception is thrown
+    }
 
+    //deactivated -> initialized
+    @Test(expectedExceptions = {StatusTransitionNotPossibleException.class})
+    public void cannot_change_user_status_from_DEACTIVATED_to_INITIALIZED() {
+        //given user in DEACTIVATED state
+        UserTDD userTDD = new UserTDD();
+        userTDD.switchState(UserTDD.UserTDDStatus.ACTIVATED);
+        userTDD.switchState(UserTDD.UserTDDStatus.DEACTIVATED);
+        //when
+        userTDD.switchState(UserTDD.UserTDDStatus.INITIALIZED);
+        //then exception is thrown
+    }
 }
