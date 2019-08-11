@@ -47,4 +47,51 @@ public class UserTDDTest {
                 Duration.between(userLastLoggedInDate, LocalDateTime.now()).plusSeconds(1));
     }
 
+    @Test
+    public void prints_last_logged_in_text() {
+        //given
+        UserTDD user = new UserTDD("PWozniak92");
+        user.login();
+        //when
+        String lastLoggedInText = user.getLastLoggedInText();
+        //format tekstu: username@2019-08-11T10:20:08.858
+        user.printLastLoggedInText();
+        //then
+        Assertions.assertThat(lastLoggedInText).matches(
+                ".*@\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d\\d\\.\\d{3}");
+    }
+
+    @Test
+    public void changes_user_status_from_INITIALIZED_to_ACTIVATED() {
+        //given user in INITIALIZED state
+        UserTDD userTDD = new UserTDD();
+        //when
+        userTDD.switchState(UserTDD.UserTDDStatus.ACTIVATED);
+        //then
+        Assertions.assertThat(userTDD.getStatus()).isEqualTo(UserTDD.UserTDDStatus.ACTIVATED);
+    }
+
+    @Test
+    public void changes_user_status_from_ACTIVATED_to_DEACTIVATED() {
+
+    }
+
+    @Test
+    public void changes_user_status_from_DEACTIVATED_to_ACTIVATED() {
+
+    }
+
+    @Test(expectedExceptions = {StatusTransitionNotPossibleException.class})
+    public void cannot_change_user_status_from_INITIALIZED_to_DEACTIVATED() {
+        //given user in INITIALIZED state
+        UserTDD userTDD = new UserTDD();
+        //when
+        userTDD.switchState(UserTDD.UserTDDStatus.DEACTIVATED);
+        //then exception is thrown
+    }
+
+    //dodatkowo nie mozna:
+    //activated -> initialized
+    //deactivated -> initialized
+
 }

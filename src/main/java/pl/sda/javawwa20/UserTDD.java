@@ -10,11 +10,17 @@ public class UserTDD {
     private LocalDateTime registeredDate;
     private UserTDDStatus status;
     private LocalDateTime lastLoggedInDate;
+    private String username;
 
     //redefiniuje domyslny konstruktor
     public UserTDD() {
         this.registeredDate = LocalDateTime.now();
         this.status = UserTDDStatus.INITIALIZED;
+    }
+
+    public UserTDD(String username) {
+        this();
+        this.username = username;
     }
 
     public LocalDateTime getRegisteredDate() {
@@ -53,9 +59,32 @@ public class UserTDD {
         return Duration.between(this.lastLoggedInDate, LocalDateTime.now());
     }
 
+    public void printLastLoggedInText() {
+        System.out.println(getLastLoggedInText());
+    }
+
+    String getLastLoggedInText() {
+        return username + "@" + lastLoggedInDate;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void switchState(UserTDDStatus status) {
+        if(status.equals(UserTDDStatus.DEACTIVATED))
+            throw new StatusTransitionNotPossibleException();
+
+        this.status = status;
+    }
+
     //inner class
     public enum UserTDDStatus {
-        INITIALIZED
+        ACTIVATED, DEACTIVATED, INITIALIZED
 
     }
 }
